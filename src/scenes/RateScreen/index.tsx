@@ -36,7 +36,7 @@ const RateScreen = () => {
             </View>
             <View style={styles.botCont}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Main', {screen: 'LanguagePage'})}
+                    onPress={() => navigation.navigate('Main', {screen: 'TabBar'})}
                 >
                     <View style={styles.touchBot}> 
                         <Icon name='call' size={30} color="red"/>

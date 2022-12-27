@@ -37,7 +37,7 @@ import { GenericNavigationProps } from '@routes/types';
 import { userLoginPayload } from '@redux/loginReq/selectors';
 
 const HomePreCall = () => {
-    const API_URL = 'https://db20-27-72-97-141.ngrok.io'
+    const API_URL = 'https://6b15-14-163-238-107.ap.ngrok.io/'
     const navigation = useNavigation<GenericNavigationProps>()
     const dispatch = useDispatch()
     const user = useSelector(userLoginPayload)
@@ -170,7 +170,7 @@ const HomePreCall = () => {
                     dispatch(propsSetUsername(propsPayload.userName))
                     dispatch(propsSetRoomname(propsPayload.roomName))
                     _checkPermissions(() => {
-                    fetch(`${API_URL}getToken?userName=mnam`)
+                    fetch(`${API_URL}getToken?userName=mnaz`)
                         .then((response) => {
                         if (response.ok) {
                             // console.log(response.text().then())

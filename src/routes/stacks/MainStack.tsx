@@ -14,11 +14,13 @@ import { FC } from 'react';
 import * as React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const MainStack = createStackNavigator();
-import { useSelector } from 'react-redux';
-import { userLoginPayload } from '@redux/loginReq/selectors';
+import { useDispatch,useSelector } from 'react-redux';
+// import { userLoginPayload } from '@redux/loginReq/selectors';
 import TabBar from '@scenes/TabBar';
-
+import { getLanguages } from '../../commons/exportFunction';
+import { setLanguages } from '@redux/languages/actions';
 export const MainStackScreen: FC = () => {
+  const dispatch = useDispatch()
   // const user = useSelector(userLoginPayload)
   // const storeToken = async() => {
   //     try{
@@ -48,9 +50,15 @@ export const MainStackScreen: FC = () => {
     getToken();
   },[token])
   console.log('token:', token)
+  React.useEffect(() => {
+        getLanguages().then((data) => {
+            dispatch(setLanguages(data))
+            // console.log(data);
+        }).catch(error => console.log(error));
+    })
   return (
     <MainStack.Navigator 
-      initialRouteName="Login"
+      initialRouteName="TabBar"
     >
       {token === null ? (
         <MainStack.Screen
@@ -62,7 +70,7 @@ export const MainStackScreen: FC = () => {
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
-      ) : (
+      ) : ( 
         <MainStack.Screen
           name="TabBar"
           component={TabBar}
@@ -70,7 +78,8 @@ export const MainStackScreen: FC = () => {
             headerShown: false,
             headerTitleAlign: 'center',
           }}
-        />)}
+        />
+        )} 
       <MainStack.Screen
         name="Register"
         component={RegisterPage}

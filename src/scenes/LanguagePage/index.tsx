@@ -2,41 +2,27 @@ import * as React from 'react'
 import {
     Text,
     View,
-    // BackHandler
+    TouchableOpacity
 } from 'react-native'
-import { Button } from 'native-base'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { 
-    // useSelector, 
+    useSelector, 
     useDispatch 
 } from 'react-redux'
-// import { userLoginPayload } from '@redux/loginReq/selectors'
-import { 
-    NavigationContainer, 
-    useNavigation 
-} from '@react-navigation/native'
-import { GenericNavigationProps } from '@routes/types'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomePreCall from '@scenes/HomePreCall'
-import Homepage from '@scenes/Homepage'
-// import { loadingSet } from '../../redux/loading/actions'
-// import { removeAccessToken } from '@redux/loginReq/actions'
+import { getLanguagesStore } from '@redux/languages/selectors'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from '@scenes/LanguagePage/styles';
 
+interface ILanguage{
+    id: number;
+    name: string;
+    type: string
+}
 const LanguagePage = () => {
-    const navigation = useNavigation<GenericNavigationProps>()
     const dispatch = useDispatch()
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         const onBackPress = () => {
-    //             return true;
-    //         };
-        
-    //         BackHandler.addEventListener('hardwareBackPress', onBackPress);
-            
-    //         return () =>
-    //             BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    //     }, []),
-    // );
+    const allLanguages = useSelector(getLanguagesStore)
+    // const [languages, setLanguages] = React.useState<ILanguage[] | null>(null) 
+    console.log('all languages: ', allLanguages)
     const delToken = async () => {
         try {
             await AsyncStorage.clear();
@@ -44,17 +30,30 @@ const LanguagePage = () => {
             console.log(error);
         }
     }
-    const [set, reset] = React.useState<boolean>(false)
     const handleLogout = () => {
         delToken();
-        reset(true)
-        // dispatch(removeAccessToken())
-        // navigation.navigate('Main', {screen: 'Login'})
     }
-    const Tab = createBottomTabNavigator()
+    // React.useEffect(() => {
+    //     // setLanguages(allLanguages)
+    // }, [languages])
+
     return(
-        <View>
-            <Text>Language Page</Text>
+        <View style={styles.languageCont}>
+            {allLanguages.language?.map((item: ILanguage) => (
+                <View key={item.id} style={styles.liItem}>
+                    {/* <View> */}
+                        <Text>{item.name}</Text>
+                    {/* </View> */}
+                    <View style={styles.callIcon}>
+                        <TouchableOpacity>
+                            <Ionicons name='call-sharp' size={22}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Ionicons name='videocam' size={22}/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            ))}
         </View>
     )
 }

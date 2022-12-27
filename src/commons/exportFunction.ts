@@ -62,3 +62,20 @@ export async function getAcceptStatus(){
         console.log(err); 
     }
 }
+export async function getLanguages(){
+    try{
+        const response = await fetch('https://63a3fdab821953d4f2a60bb6.mockapi.io/languages',
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await response.json()
+        return data
+    }
+    catch(err){
+        console.log(err); 
+    }
+}

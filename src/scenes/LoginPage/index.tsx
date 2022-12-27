@@ -31,7 +31,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { GenericNavigationProps } from '@routes/types';
 import { messageHandlerSet } from '@redux/messageHandler/actions';
 import { userLoginSuccess } from '@redux/loginReq/actions';
-import { getAcceptStatus } from '../../commons/exportFunction';
+import { getAcceptStatus, isReject } from '../../commons/exportFunction';
 import { userLoginPayload} from '@redux/loginReq/selectors'
 const LoginPage: FC = () => {
     const dispatch = useDispatch()
@@ -54,7 +54,7 @@ const LoginPage: FC = () => {
     const [loading, setLoading] = useState(false)
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://10.10.20.13:3001/api/auth/login',{
+            const response = await fetch('http://10.10.21.18:3001/api/auth/login',{
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -109,6 +109,7 @@ const LoginPage: FC = () => {
             }
         })
         .catch(error => console.log(error))
+        isReject()
     },[])
     // const user = useSelector(userLoginPayload)
     // const storeToken = async() => {

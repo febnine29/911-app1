@@ -58,6 +58,7 @@ const propsReducer = createReducer(initialState, {
     },
     [propsSetTrack.type]: (state, {payload}) => {
         state.props.videoTracks = payload;
+        // state.props.videoTracks = {...state.props.videoTracks, payload }
     },
     [propsSetUsername.type]: (state, {payload}) => {
         state.props.userName = payload;
@@ -78,5 +79,8 @@ const propsReducer = createReducer(initialState, {
         state.props.roomName = '',
         state.props.token = ''
     },
+    // [propsGetOldVideoTracks.type]: (state) => {
+
+    // }
 })
 export default propsReducer
