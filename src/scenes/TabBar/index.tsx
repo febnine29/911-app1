@@ -1,19 +1,16 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Homepage from '@scenes/Homepage';
+// import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import HomePreCall from '@scenes/HomePreCall';
 import LanguagePage from '@scenes/LanguagePage';
+import SettingPage from '@scenes/SettingPage'
 import { 
     getAcceptStatus,
     isReject
 } from '../../commons/exportFunction';
-import { GenericNavigationProps } from '@routes/types';
-import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View } from 'react-native'
 
 export default function TabBar(){
-    const navigation = useNavigation<GenericNavigationProps>()
     const Tab = createBottomTabNavigator()
     const [accepted, setAccepted] = React.useState(false)
     React.useEffect(() =>{
@@ -30,38 +27,37 @@ export default function TabBar(){
         <Tab.Navigator 
             initialRouteName={accepted ? 'LanguagePage' : 'HomePreCall'}
             screenOptions={{
-                tabBarActiveTintColor: 'coral',
+                tabBarActiveTintColor: 'white',
+                tabBarInactiveTintColor: '#c5c5c5',
+                tabBarStyle: {
+                    backgroundColor: '#da0000'
+                }
             }}
-
         >
                 <Tab.Screen 
                     name="Languages" 
                     component={LanguagePage} 
                     options={{
-                        headerShown: false,
-                        tabBarIcon: () => (
-                            <Ionicons size={18} name='earth'/>
+                        tabBarIcon: ({focused}) => (
+                            <Ionicons size={18} name='earth' color={focused ? 'white' : '#c5c5c5'}/>
                         ),
-                        tabBarActiveTintColor: 'coral'
                     }}
                 />
                 <Tab.Screen 
                     name="Call" 
                     component={HomePreCall} 
                     options={{
-                        headerShown: false,
-                        tabBarIcon: () => (
-                            <Ionicons size={18} name='call'/>
+                        tabBarIcon: ({focused}) => (
+                            <Ionicons size={18} name='call' color={focused ? 'white' : '#c5c5c5'}/>
                         )
                     }}
                 />
                 <Tab.Screen 
-                    name="Home" 
-                    component={Homepage} 
+                    name="Settings" 
+                    component={SettingPage} 
                     options={{
-                        headerShown: false,
-                        tabBarIcon: () => (
-                            <Ionicons size={18} name='settings'/>
+                        tabBarIcon: ({focused}) => (
+                            <Ionicons size={18} name='settings-sharp' color={focused ? 'white' : '#c5c5c5'}/>
                         )
                     }}
                 />

@@ -1,10 +1,16 @@
 import RNCallKeep from 'react-native-callkeep';
 import { Platform } from 'react-native'
-// import { isAccept } from '@redux/testHandler/types';
+
 import { 
     isAccept,
     isReject
 } from '../commons/exportFunction';
+import { NativeModules } from "react-native";
+
+
+// import { useEffect } from 'react';
+
+
 export const handleCallNotification = async () => {
     console.log("Trting to call");
     if (Platform.OS === "android") await RegisterCallKeep();
@@ -21,24 +27,20 @@ export const handleCallNotification = async () => {
 
 }
 
-const callKeepConfig = {
-    ios: {
-        appName: "appname",
-    },
 
-    android: {
-        alertTitle: "Permissions required",
-        additionalPermissions: [],
-        alertDescription: "This application needs to access your phone accounts",
-        cancelButton: "Cancel",
-        //   additionalPermissions: [],
-        okButton: "ok",
-    },
-};
-const answerCall = async () => {
-    RNCallKeep.endAllCalls()
+const answerCall = () => {
+    RNCallKeep.endAllCalls();
+    RNCallKeep.setCurrentCallActive("YOUR CALL UUID");
+
+    if (Platform.OS === "android") {
+        const { CallkeepHelperModule } = NativeModules;
+        CallkeepHelperModule.startActivity();
+        RNCallKeep.endAllCalls();
+    }
+    // this.IsRinging = false;
+    // navigate("somewhere");
     RNCallKeep.backToForeground();
-    await isAccept().then((json) => {
+    isAccept().then((json) => {
         console.log(json);
     }).catch((err) => {
         console.log(err);
@@ -46,6 +48,7 @@ const answerCall = async () => {
 }
 const endCall = () => {
     RNCallKeep.endAllCalls();
+    console.log("call3");
     isReject()
 }
 

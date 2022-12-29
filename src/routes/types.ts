@@ -1,4 +1,4 @@
-import { NavigationProp, StackActionType } from '@react-navigation/native';
+import { StackActionType } from '@react-navigation/native';
 
 export type NavigateProps = {
   (name: string, params?: unknown): void;

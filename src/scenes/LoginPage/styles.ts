@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { blob } from 'stream/consumers';
 
 const styles = StyleSheet.create({
     container: {
@@ -9,7 +8,8 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     title: {
-        fontSize: 36,
+        fontSize: 24,
+        color: '#DC2222',
         fontWeight: 'bold',
     },
     imgLogo:{
@@ -49,10 +49,18 @@ const styles = StyleSheet.create({
     inputLabel: {
         fontSize: 20
     },
-    // inputStyle:{
-    //     borderBottomColor: 'grey',
-    //     borderBottom: '1px'
-    // },
+    textBold: {
+        fontSize: 16,
+        textDecoration: 'none',
+        color: '#FF4040',
+        fontWeight: '500',
+    },
+    textSignIn: {
+    color: 'white',
+    fontWeight: '500',
+    fontSize: 20,
+    letterSpacing: 2,
+    },
     buttonContainer: {
         marginLeft: 'auto',
     },

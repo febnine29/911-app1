@@ -1,38 +1,27 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import LoginPage from '@scenes/LoginPage'
-import Homepage from '@scenes/Homepage';
-import UserDetails from '@scenes/UserDetails';
-import UsersList from '@scenes/UsersList';
 import RegisterPage from '@scenes/RegisterPage';
-import MainPage from '@scenes/MainPage';
 import HomePreCall from '@scenes/HomePreCall';
 import VideoCallScreen from '@scenes/VideoCallScreen';
-import RateScreen from '@scenes/RateScreen';
-import LanguagePage from '@scenes/LanguagePage';
-import customTheme from '@theme';
+import CallWaiting from '@scenes/CallWaiting';
+import TabBar from '@scenes/TabBar';
 import { FC } from 'react';
 import * as React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const MainStack = createStackNavigator();
-import { useDispatch,useSelector } from 'react-redux';
-// import { userLoginPayload } from '@redux/loginReq/selectors';
-import TabBar from '@scenes/TabBar';
+import { useDispatch, useSelector } from 'react-redux';
 import { getLanguages } from '../../commons/exportFunction';
 import { setLanguages } from '@redux/languages/actions';
+import { loadingGetStatus } from '@redux/loading/selectors';
+import LoadingScreen from '@components/LoadingScreen';
+import { ILoading } from '@redux/loading/reducers';
+const MainStack = createStackNavigator();
+
 export const MainStackScreen: FC = () => {
   const dispatch = useDispatch()
-  // const user = useSelector(userLoginPayload)
-  // const storeToken = async() => {
-  //     try{
-  //         await AsyncStorage.setItem('@access-token', user.accessToken)
-  //     } catch(err){
-  //         console.log('err storage token')
-  //     }
-  // }
-  // React.useEffect(() => {
-  //     storeToken()
-  // })
+  const isLoggedIn = useSelector(loadingGetStatus)
+  const [logged, setLogged] = React.useState<ILoading>()
   const [token, setToken] = React.useState<string | null>(null)
+  const [loading, setLoading] = React.useState(false)
   const getToken = async () => {
     // get Data from Storage
       try {
@@ -44,22 +33,30 @@ export const MainStackScreen: FC = () => {
           }
       } catch (error) {
           console.log(error);
+      } finally {
+        setLoading(false);
       }
   };
+
   React.useEffect(() => {
-    getToken();
+    setLoading(true)
+    getToken(); 
   },[token])
-  console.log('token:', token)
   React.useEffect(() => {
-        getLanguages().then((data) => {
-            dispatch(setLanguages(data))
-            // console.log(data);
-        }).catch(error => console.log(error));
-    })
+    getLanguages().then((data) => {
+        dispatch(setLanguages(data))
+    }).catch(error => console.log(error));
+  })
+  React.useEffect(() => {
+    setLogged(isLoggedIn)
+    getToken()
+  },[isLoggedIn])
+  
+  if(loading){
+    return <LoadingScreen />
+  }
   return (
-    <MainStack.Navigator 
-      initialRouteName="TabBar"
-    >
+    <MainStack.Navigator>
       {token === null ? (
         <MainStack.Screen
         name="Login"
@@ -89,15 +86,6 @@ export const MainStackScreen: FC = () => {
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
-      
-      <MainStack.Screen
-        name="RateScreen"
-        component={RateScreen}
-        options={{
-          headerShown: false,
-          headerTitleAlign: 'center',
-        }}
-      />
       <MainStack.Screen
         name="HomePreCall"
         component={HomePreCall}
@@ -114,53 +102,12 @@ export const MainStackScreen: FC = () => {
           headerTitleAlign: 'center'
         }}
       />
-      
-      <MainStack.Screen
-        name="MainPage"
-        component={MainPage}
+       <MainStack.Screen
+        name="CallWaiting"
+        component={CallWaiting}
         options={{
-          headerShown: true,
-          headerTitleAlign: 'center',
-          ...TransitionPresets.SlideFromRightIOS,
-        }}
-      />
-      <MainStack.Screen
-        name="Home"
-        component={Homepage}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'center',
-          ...TransitionPresets.SlideFromRightIOS,
-        }}
-      />
-      <MainStack.Screen
-        name="UsersList"
-        component={UsersList}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerLeftContainerStyle: {
-            paddingLeft: customTheme.space[5],
-          },
-          headerRightContainerStyle: {
-            paddingRight: customTheme.space[5],
-          },
-          ...TransitionPresets.SlideFromRightIOS,
-        }}
-      />
-      <MainStack.Screen
-        name="UserDetails"
-        component={UserDetails}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerLeftContainerStyle: {
-            paddingLeft: customTheme.space[5],
-          },
-          headerRightContainerStyle: {
-            paddingRight: customTheme.space[5],
-          },
-          ...TransitionPresets.SlideFromRightIOS,
+          headerShown: false,
+          headerTitleAlign: 'center'
         }}
       />
     </MainStack.Navigator>

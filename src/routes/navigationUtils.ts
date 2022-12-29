@@ -4,6 +4,7 @@ import { createRef } from 'react';
 export const navigationRef = createNavigationContainerRef();
 export const isMountedRef = createRef();
 
+
 interface NavigateProps {
   (name: string, params: Record<string, unknown>): void;
 }
@@ -14,6 +15,7 @@ export const navigate: NavigateProps = (name, params) => {
     // Perform navigation if the app has mounted
     navigationRef.current.navigate(name, params);
   } else {
+    console.log("e")
     // You can decide what to do if the app hasn't mounted
     // You can ignore this, or add these actions to a queue you can call later
   }
