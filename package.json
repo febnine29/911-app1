@@ -49,7 +49,7 @@
     "@react-navigation/bottom-tabs": "^6.5.2",
     "@react-navigation/material-bottom-tabs": "^6.2.10",
     "@react-navigation/native": "6.0.11",
-    "@react-navigation/stack": "6.2.2",
+    "@react-navigation/stack": "6.3.11",
     "@reduxjs/toolkit": "1.8.4",
     "axios": "^0.27.2",
     "feather-icons": "^4.29.0",
